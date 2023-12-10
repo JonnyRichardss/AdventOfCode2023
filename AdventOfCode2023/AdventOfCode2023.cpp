@@ -32,12 +32,15 @@ int main()
         string line = *i;
         if (line == "") continue;
         Game g(line);
+        /*
         if (g.CheckGame(12,13,14)) {
             GameTotal += g.id;
         }
         else {
             cout << endl;
         }
+        */
+        GameTotal += g.getPower();
     }
     cout << GameTotal << endl;
     return 0;

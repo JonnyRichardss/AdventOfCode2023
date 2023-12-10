@@ -12,6 +12,7 @@ public:
 	vector<Draw> allDraws;
 	bool CheckGame(int red, int green, int blue);
 	Game(string input);
+	int getPower();
 	
 };
 

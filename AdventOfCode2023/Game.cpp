@@ -21,3 +21,14 @@ Game::Game(string input) {
 	}
 
 }
+
+int Game::getPower()
+{
+	int red = 0;
+	int green = 0;
+	int blue = 0;
+	for (vector<Draw>::iterator i = allDraws.begin(); i != allDraws.end(); i++) {
+		i->UpdateMinCubes(red, green, blue);
+	}
+	return red * green * blue;
+}

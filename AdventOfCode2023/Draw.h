@@ -12,5 +12,6 @@ public:
 	Draw(string input);
 	bool CheckDraw(int r, int g, int b);
 	bool tryFind(string input, string word, int& var);
+	void UpdateMinCubes(int &r, int &g, int &b);
 };
 

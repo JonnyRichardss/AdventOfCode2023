@@ -30,3 +30,16 @@ Draw::Draw(string input) : Draw() {
 	}
 	return false;
 }
+
+ void Draw::UpdateMinCubes(int &r, int &g, int &b)
+ {
+	 if (red > r) {
+		 r = red;
+	 }
+	 if (green > g) {
+		 g = green;
+	 }
+	 if (blue > b) {
+		 b = blue;
+	 }
+ }
