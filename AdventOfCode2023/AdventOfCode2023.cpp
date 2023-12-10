@@ -1,20 +1,60 @@
-// AdventOfCode2023.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
-
+#include <vector>
+#include <string>
+#include <fstream>
 #include <iostream>
+using namespace std;
+vector<string> ReadFile(string filePath) {
+    std::vector<std::string> output;
+    char lineBuffer[1024];
+    std::ifstream myFile(filePath);
 
-int main()
-{
-    std::cout << "Hello World!\n";
+    if (myFile.is_open()) {
+        while (!myFile.eof()) {
+            lineBuffer[0] = '\0'; //empty string
+            myFile.getline(lineBuffer, 1024);
+            output.push_back(lineBuffer);
+        }
+        myFile.close();
+    }
+    return output;
 }
+char FindDigit(string& line) {
+    for (string::iterator i = line.begin(); i != line.end(); i++) {
+        if (isdigit(*i)) {
+            return *i;
+        }
+    }
+}
+int GetNumber(string line) {
+    string digits = "  ";
+    digits[0] = FindDigit(line);
+    reverse(line.begin(), line.end());
+    digits[1] = FindDigit(line);
 
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
+    //if the data doesnt go through right, ignore it
+    //this is lazy but oh well
+    try {
+        return stoi(digits);
+    }
+    catch (...) {
+        return 0;
 
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
+    }
+}
+int main() {
+    //for every line read the first and last digits
+    //sum them all
+
+
+
+    //first we read the file
+    vector<string> lines = ReadFile("input.txt");
+
+    //then extract each number and add to total
+    int total = 0;
+    for (vector<string>::iterator i = lines.begin(); i != lines.end(); i++) {
+        total += GetNumber(*i);
+    }
+    cout << total << endl;
+    return 0;
+}
