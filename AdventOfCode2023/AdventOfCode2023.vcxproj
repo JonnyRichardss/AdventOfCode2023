@@ -128,6 +128,17 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AdventOfCode2023.cpp" />
+    <ClCompile Include="Draw.cpp" />
+    <ClCompile Include="Game.cpp" />
+    <ClCompile Include="Helpers.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Draw.h" />
+    <ClInclude Include="Game.h" />
+    <ClInclude Include="Helpers.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="input.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

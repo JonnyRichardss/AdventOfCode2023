@@ -2,19 +2,43 @@
 //
 
 #include <iostream>
+#include <vector>
+#include <string>
+#include <fstream>
+#include "Game.h"
+using namespace std;
 
+vector<string> ReadFile(string filePath) {
+    std::vector<std::string> output;
+    char lineBuffer[1024];
+    std::ifstream myFile(filePath);
+
+    if (myFile.is_open()) {
+        while (!myFile.eof()) {
+            lineBuffer[0] = '\0'; //empty string
+            myFile.getline(lineBuffer, 1024);
+            output.push_back(lineBuffer);
+        }
+        myFile.close();
+    }
+    return output;
+}
 int main()
 {
-    std::cout << "Hello World!\n";
+    vector<string> lines = ReadFile("input.txt");
+    int GameTotal = 0;
+    //For every game, construct and call checkGame
+    for (vector<string>::iterator i = lines.begin(); i != lines.end(); i++) {
+        string line = *i;
+        if (line == "") continue;
+        Game g(line);
+        if (g.CheckGame(12,13,14)) {
+            GameTotal += g.id;
+        }
+        else {
+            cout << endl;
+        }
+    }
+    cout << GameTotal << endl;
+    return 0;
 }
-
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
