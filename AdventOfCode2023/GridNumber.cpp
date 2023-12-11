@@ -8,6 +8,7 @@ GridNumber::GridNumber(vector<string>& grid, int val, Coordinate startCoord, Coo
 		}
 	}
 	VerifySymbolNeighbour(grid);
+
 }
 
 void GridNumber::VerifySymbolNeighbour(vector<string>& grid) {
@@ -24,7 +25,27 @@ void GridNumber::VerifySymbolNeighbour(vector<string>& grid) {
 		value = 0;
 	}
 }
+void GridNumber::AddAllGears(vector<string>& grid,vector<Gear> & ExistingGears) {
+	vector<Gear> output;
+	vector<Coordinate> neighbours = AllValidNeighbours(grid);
+	for (vector<Coordinate>::iterator i = neighbours.begin(); i != neighbours.end(); i++) {
+		char c = grid[i->row][i->col];
+		if (c=='*') {
+			bool found = false;
+			for (vector<Gear>::iterator j = ExistingGears.begin(); j != ExistingGears.end(); j++) {
 
+				if (j->position == *i) {
+					j->countAdjacent++;
+					j->ratio *= value;
+					found = true;
+					break;
+				}
+			}
+			if (!found) ExistingGears.push_back(Gear(*i, value));
+			break;
+		}
+	}
+}
 vector<Coordinate> GridNumber::AllValidNeighbours(vector<string>& grid) {
 	vector<Coordinate> output;
 	for (vector<Coordinate>::iterator i = allCoords.begin(); i != allCoords.end(); i++) {

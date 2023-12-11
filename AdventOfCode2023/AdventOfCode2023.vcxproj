@@ -128,6 +128,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="AdventOfCode2023.cpp" />
+    <ClCompile Include="Gear.cpp" />
     <ClCompile Include="GridNumber.cpp" />
     <ClCompile Include="Helpers.cpp" />
   </ItemGroup>
@@ -136,6 +137,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Coordinate.h" />
+    <ClInclude Include="Gear.h" />
     <ClInclude Include="GridNumber.h" />
     <ClInclude Include="Helpers.h" />
   </ItemGroup>

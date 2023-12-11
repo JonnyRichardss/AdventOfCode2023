@@ -4,9 +4,13 @@ using namespace std;
 struct Coordinate {
     int row;
     int col;
-    Coordinate(int R, int C) {
+    Coordinate(int R=0, int C=0) {
         row = R;
         col = C;
+    }
+    Coordinate(const Coordinate &c) {
+        row = c.row;
+        col = c.col;
     }
     vector<Coordinate> GetAllNeighbours() {
         vector<Coordinate> output;

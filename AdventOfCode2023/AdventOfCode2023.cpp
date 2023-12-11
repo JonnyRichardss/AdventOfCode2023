@@ -45,7 +45,7 @@ vector<string> ReadFile(string filePath) {
     return output;
 }
 
-GridNumber GetNumber(vector<string>& lines, int rowIndex, int &firstIndex) {
+GridNumber GetNumber(vector<string>& lines, int rowIndex, int &firstIndex,vector<Gear> &ExistingGears) {
     string line = lines[rowIndex];
     Coordinate startCoord(rowIndex, firstIndex);
     string allDigits;
@@ -64,15 +64,16 @@ GridNumber GetNumber(vector<string>& lines, int rowIndex, int &firstIndex) {
     return (g);
 }
 
-int SumAllNumbers(vector<string> &lines) {
+int SumAllNumbers(vector<string> &lines, vector<Gear>& ExistingGears) {
     int output = 0;
     for (int i = 0; i < lines.size(); i++) {
         if (lines[i] == "") 
         { continue; }
         for (int j = 0; j < lines[i].size(); j++) {
             if (isdigit(lines[i][j])) {
-                
-                output += GetNumber(lines,i,j).value;
+                GridNumber g = GetNumber(lines, i, j, ExistingGears);
+                g.AddAllGears(lines, ExistingGears);
+                output += g.value;
             }
         }
     }
@@ -83,7 +84,7 @@ int main()
 
 
     vector<string> lines = ReadFile("input.txt");
-    vector<vector<char>> engine;
+   // vector<vector<char>> engine;
 
     //ENGINE IS A VECTOR OF ROWS
     //[row][col]
@@ -106,8 +107,16 @@ int main()
 
 
 
-   
-    cout << SumAllNumbers(lines) << endl;
+    vector<Gear> allGears;
+    cout<<"Sum Of Numbers:" << SumAllNumbers(lines,allGears) << endl;
+    int ratiosum = 0;
+    for (vector<Gear>::iterator i = allGears.begin(); i != allGears.end(); i++) {
+        Gear g = *i;
+        if (g.countAdjacent == 2) {
+            ratiosum += g.ratio;
+        }
+    }
+    cout << "Sum Of Ratios:"<<ratiosum << endl;
     return 0;
 }
 
