@@ -1,35 +1,34 @@
 // AdventOfCode2023.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
 
+//NOTES FOR TASK 2
+/*
+looking for symbols wasnt working so i looked for numbers
+that turned out to be stupid because now i need to find a symbol with two numbers
+
+
+
+find asterisk with exactly two numbers and multiply them
+sum over every asterisk
+
+
+MAYBE GO BACK AND DEBUG SYMBOL VERSION - correct solution was 549908
+*/
+
+
+
+
+
 #include <iostream>
 #include <vector>
 #include <string>
 #include <fstream>
 #include <algorithm>
+#include "Coordinate.h"
+#include "Helpers.h"
+#include "GridNumber.h"
 using namespace std;
-struct Coordinate {
-    int row;
-    int col;
-    Coordinate(int R, int C) {
-        row = R;
-        col = C;
-    }
-    vector<Coordinate> GetAllNeighbours() {
-        vector<Coordinate> output;
-        for (int i = row - 1; i <= row + 1; i++) {
-            for (int j = col - 1; j <= col + 1; j++) {
-                output.push_back(Coordinate(i, j));
-            }
-        }
-        return output;
-    }
-    bool operator == (const Coordinate& obj) {
-        if (row == obj.row && col == obj.col) {
-            return true;
-        }
-        return false;
-    }
-};
+
 vector<string> ReadFile(string filePath) {
     std::vector<std::string> output;
     char lineBuffer[1024];
@@ -46,63 +45,39 @@ vector<string> ReadFile(string filePath) {
     return output;
 }
 
-vector<Coordinate> FindSymbols(vector<vector<char>> &input) {
-    vector<Coordinate>output;
-    for (int row = 0; row < input.size(); row++) {
-        for (int col = 0; col <input[row].size(); col++) {
-            char c = input[row][col];
-            if (!isalnum(c) && c != '.') {
-                output.push_back(Coordinate(row, col));
+GridNumber GetNumber(vector<string>& lines, int rowIndex, int &firstIndex) {
+    string line = lines[rowIndex];
+    Coordinate startCoord(rowIndex, firstIndex);
+    string allDigits;
+    int lastIndex;
+    for (int i = firstIndex; i <= line.size(); i++) {
+        if (!isdigit(line[i]) || i == line.size()) {
+            lastIndex = i - 1;
+            break;
+        }
+        allDigits.push_back(line[i]);
+    }
+    Coordinate endCoord(rowIndex, lastIndex);
+    int val = stoi(allDigits);
+    GridNumber g(lines,val, startCoord, endCoord);
+    firstIndex = endCoord.col + 1;
+    return (g);
+}
+
+int SumAllNumbers(vector<string> &lines) {
+    int output = 0;
+    for (int i = 0; i < lines.size(); i++) {
+        if (lines[i] == "") 
+        { continue; }
+        for (int j = 0; j < lines[i].size(); j++) {
+            if (isdigit(lines[i][j])) {
+                
+                output += GetNumber(lines,i,j).value;
             }
         }
     }
     return output;
 }
-
-vector<Coordinate> FindDigitNeighbours(vector<vector<char>> &grid,Coordinate place) {
-    vector <Coordinate> output;
-
-    vector<Coordinate> allNeighbours = place.GetAllNeighbours();
-    vector<Coordinate> validNeighbours;
-    for (vector<Coordinate>::iterator i = allNeighbours.begin(); i != allNeighbours.end(); i++) {
-        if (i->row < 0 || i->col < 0 || i->row >= grid.size() || i->col >= grid.size()) continue;
-        
-        validNeighbours.push_back(*i);
-    }
-
-    for (vector<Coordinate>::iterator i = validNeighbours.begin(); i != validNeighbours.end(); i++) {
-        char c = grid[i->row][i->col];
-        if (isdigit(c)) {
-            output.push_back(*i);
-        }
-    }
-    return output;
-}
-
-int GetFullNumber(vector<vector<char>> &grid, Coordinate place,vector<Coordinate> &usedCoords) {
-    int output = 0;
-    vector<char> row = grid[place.row];
-    int indexLastDigit = 0;
-    for (int i = place.col; i < row.size(); i++) {
-        if (!isdigit(row[i])) {
-            indexLastDigit = i - 1;
-            break;
-        }
-    }
-    int exponent = 0;
-    for (int i = indexLastDigit; i >= 0; i--) {
-        if (find(usedCoords.begin(), usedCoords.end(), Coordinate(place.row, i)) != usedCoords.end()) {
-            return 0;
-        }
-        if (!isdigit(row[i])) break;
-        
-        output += (row[i]-'0') * pow(10, exponent);
-        exponent++;
-        usedCoords.push_back(Coordinate(place.row, i));
-    }
-    return output;
-}
-
 int main()
 {
 
@@ -116,25 +91,23 @@ int main()
     // 
     // 
     //this is a 2d vector ive never done this before but I dont full understand c++ arrays they shout at me a lot :(
+    /*
     for (vector<string>::iterator row = lines.begin(); row != lines.end(); row++) {
-        if (*row == "") continue;
-        engine.push_back(vector<char>(( * row).begin(), (*row).end()));
-    }
-    vector<Coordinate> allSymbols = FindSymbols(engine);
-    //cout << "test" << endl;
+        string s = *row;
+        if (s == "") continue;
+        engine.push_back(vector<char>((s).begin(), (s).end()));
 
-    //for every symbol check its neighbours for numbers
-    //read the ints backwards
-    // += int * 10 ^ index
-    int output = 0;
-    vector<Coordinate> usedCoords;
-    for (vector<Coordinate>::iterator i = allSymbols.begin(); i != allSymbols.end(); i++) {
-        vector<Coordinate> digitNeighbours = FindDigitNeighbours(engine,*i);
-        for (vector<Coordinate>::iterator j = digitNeighbours.begin(); j != digitNeighbours.end(); j++) {
-            output += GetFullNumber(engine, *j,usedCoords);
-        }
+
+        vector<string> words = Split(s, '.');
+
     }
-    cout << output << endl;
+    */
+
+
+
+
+   
+    cout << SumAllNumbers(lines) << endl;
     return 0;
 }
 
