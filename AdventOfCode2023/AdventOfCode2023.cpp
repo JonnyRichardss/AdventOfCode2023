@@ -5,6 +5,7 @@
 #include <vector>
 #include <string>
 #include <fstream>
+#include "Card.h"
 using namespace std;
 vector<string> ReadFile(string filePath) {
     std::vector<std::string> output;
@@ -24,5 +25,14 @@ vector<string> ReadFile(string filePath) {
 int main()
 {
     vector<string> lines = ReadFile("input.txt");
+    vector<Card> allCards;
+    for (string line : lines) {
+       if (line != "") allCards.push_back(Card(line));
+    }
+    int output = 0;
+    for (Card c : allCards) {
+        output += c.GetValue();
+    }
+    cout << output << endl;
 }
 
