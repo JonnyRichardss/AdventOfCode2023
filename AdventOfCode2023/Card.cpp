@@ -26,13 +26,28 @@ Card::Card(string input)
 int Card::GetValue()
 {
 	bool foundFirst = false;
+	int output = 1;
+	output *= (GetNumWins() - 1);
+	return output;
+}
+
+int Card::GetNumWins()
+{
 	int output = 0;
 	for (int i : OurNumbers) {
 		auto foundNum = find(WinningNumbers.begin(), WinningNumbers.end(), i);
 		if (foundNum != WinningNumbers.end()) {
-			if (!foundFirst) { foundFirst = true; output = 1; continue; }
-			output *= 2;
+			output++;
 		}
+	}
+	return output;
+}
+
+vector<Card> Card::MakeCopies(const vector<Card> &allCards)
+{
+	vector<Card> output;
+	for (int offset = 0; offset < GetNumWins(); offset++) {
+		output.push_back(allCards[ID+offset]);
 	}
 	return output;
 }

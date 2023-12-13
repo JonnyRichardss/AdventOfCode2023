@@ -34,5 +34,18 @@ int main()
         output += c.GetValue();
     }
     cout << output << endl;
-}
 
+    output = 0;
+    vector<Card> remainingCards = allCards;
+    while (remainingCards.size()>0) {
+        vector<Card> copies;
+        for (Card c : remainingCards) {
+            output++;
+            vector<Card> theseCopies = c.MakeCopies(allCards);
+            copy(theseCopies.begin(), theseCopies.end(), back_inserter(copies));
+        }
+        remainingCards.clear();
+        remainingCards = copies;
+    }
+    cout << output << endl;
+}
